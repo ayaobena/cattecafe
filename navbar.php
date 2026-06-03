@@ -21,7 +21,6 @@ h1, h2, h3, h4, .navbar-brand {
     transition: all 0.3s ease-in-out;
 }
 
-/* Navbar Styling */
 .navbar {
     background: rgba(44, 37, 35, 0.85);
     backdrop-filter: blur(10px);
@@ -42,7 +41,6 @@ h1, h2, h3, h4, .navbar-brand {
     position: relative;
 }
 
-/* Growing white/pink underline animation for standard text links */
 .nav-link::after {
     content: '';
     position: absolute;
@@ -58,7 +56,6 @@ h1, h2, h3, h4, .navbar-brand {
     width: 100%;
 }
 
-/* CRITICAL FIX: Safely completely cancels growing line effects from destroying the custom profile layout */
 .profile-dropdown-toggle::after,
 .profile-dropdown-toggle:hover::after,
 .profile-dropdown-toggle:focus::after,
