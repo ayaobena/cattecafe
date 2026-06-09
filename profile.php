@@ -1,3 +1,4 @@
+
 <?php
 require_once 'config.php';
 
@@ -5,7 +6,7 @@ if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit();
 }
-
+// fetch the data from database 
 $user_id = $_SESSION['user_id'];
 $status_message = "";
 
