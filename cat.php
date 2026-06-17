@@ -24,10 +24,10 @@ $result = $conn->query($sql);
    <?php include 'navbar.php'; ?>
 
     <header class="container text-center py-5">
-        <div class="h2 section-title display-5 fw-bold">Meet Our Residents</div>
+        <div class="section-title display-5 fw-bold">Meet Our Residents</div>
         <div class="text-muted mx-auto" style="max-width: 600px;">
             Every cat at our cafe has a unique story and personality. Click on their profiles to learn more about your future furry friends!
-</div>
+        </div>
     </header>
 
     <section class="container pb-5">
@@ -36,6 +36,7 @@ $result = $conn->query($sql);
             <?php 
             if ($result && $result->num_rows > 0) {
                 while($row = $result->fetch_assoc()) {
+
                     $imageName = basename($row['img']);
                     $imagePath = "Cat/" . $imageName;
                     
@@ -53,7 +54,7 @@ $result = $conn->query($sql);
                             </div>
                             <div class="card-body text-center p-4 d-flex flex-column justify-content-between">
                                 <div>
-                                    <div class="h3 cat-name h4 mb-1"><?php echo $catName; ?></div>
+                                    <div class="cat-name h4 mb-1"><?php echo $catName; ?></div>
                                     <div class="small text-muted mb-3"><?php echo $breed; ?></div>
                                     <div class="mb-4">
                                         <span class="trait-tag"><?php echo $gender; ?></span>
@@ -80,28 +81,28 @@ $result = $conn->query($sql);
                                         <div class="modal-body p-5">
                                             <div class="d-flex justify-content-between align-items-start">
                                                 <div>
-                                                    <div class="h2 cat-name h1 mb-1"><?php echo $catName; ?></div>
+                                                    <div class="cat-name h1 mb-1"><?php echo $catName; ?></div>
                                                     <div class="text-pink fw-bold" style="color: #d06a93;">
                                                         <?php echo $age; ?> <?php echo ($age == 1) ? 'Year' : 'Years'; ?> Old • <?php echo $gender; ?>
-</div>
+                                                    </div>
                                                 </div>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                             
                                             <hr class="my-4 opacity-10">
 
-                                            <div class="h5 fw-bold mb-3">About <?php echo $catName; ?></div>
+                                            <div class="fw-bold mb-3">About <?php echo $catName; ?></div>
                                             <div class="text-muted">
                                                 <?php echo $description; ?>
-</div>
+                                            </div>
 
                                             <div class="row mt-4">
                                                 <div class="col-6">
-                                                    <div class="h6 fw-bold small text-uppercase text-muted">Breed</div>
+                                                    <div class="fw-bold small text-uppercase text-muted">Breed</div>
                                                     <div><?php echo $breed; ?></div>
                                                 </div>
                                                 <div class="col-6">
-                                                    <div class="h6 fw-bold small text-uppercase text-muted">Status</div>
+                                                    <div class="fw-bold small text-uppercase text-muted">Status</div>
                                                     <div>Resident</div>
                                                 </div>
                                             </div>
@@ -120,6 +121,7 @@ $result = $conn->query($sql);
             } else {
                 echo "<div class='col-12 text-center'><p class='text-muted'>No cats found in the records.</p></div>";
             }
+          
             $conn->close();
             ?>
 

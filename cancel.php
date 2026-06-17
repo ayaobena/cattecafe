@@ -3,7 +3,7 @@ session_start();
 require_once 'config.php';
 if (!isset($_SESSION['user_id'])) die("Unauthorized");
 
-$type = $_GET['type'] ?? ''; 
+$type = $_GET['type'] ?? ''; // 'order' or 'booking'
 $id = (int)($_GET['id'] ?? 0);
 $user_id = (int)$_SESSION['user_id'];
 

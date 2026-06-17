@@ -4,13 +4,17 @@ require_once 'config.php';
 $message = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    
+
     $fname    = $conn->real_escape_string($_POST['Fname']);
     $mname    = $conn->real_escape_string($_POST['Mname']);
     $lname    = $conn->real_escape_string($_POST['Lname']);
     $email    = $conn->real_escape_string($_POST['email']);
     $contact  = $conn->real_escape_string($_POST['contact']);
-    $pass     = $_POST['password'];
+
+    $region   = "Region IV-A";
+    $city     = $conn->real_escape_string($_POST['city']);
+
+    $pass         = $_POST['password'];
     $confirm_pass = $_POST['confirm_password'];
 
     if ($pass !== $confirm_pass) {
@@ -23,8 +27,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $message = "<div class='alert alert-warning'>This email is already registered!</div>";
         } else {
 
-            $sql = "INSERT INTO customer_tbl (Fname, Mname, Lname, email, contact, password) 
-                    VALUES ('$fname', '$mname', '$lname', '$email', '$contact', '$hashed_password')";
+            $sql = "INSERT INTO customer_tbl (Fname, Mname, Lname, email, contact, password, role, region, city) 
+                    VALUES ('$fname', '$mname', '$lname', '$email', '$contact', '$hashed_password', 'customer', '$region', '$city')";
 
             if ($conn->query($sql) === TRUE) {
                 $message = "<div class='alert alert-success'>Account created successfully! <a href='login.php' class='fw-bold'>Log In Here</a></div>";
@@ -70,7 +74,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <div class="text-white-50 font-weight-light small lh-lg">
                             Create an account to unlock faster seat reservations, save your favorite custom drinks, and
                             keep up with our adorable feline family records.
-                        </div>
+                        </>
                     </div>
 
                     <div>
@@ -95,7 +99,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <?php echo $message; ?>
 
                     <form action="signup.php" method="POST" autocomplete="off">
-                        
+
                         <div class="row g-2 mb-3">
                             <div class="col-md-4">
                                 <div class="form-floating">
@@ -113,6 +117,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <div class="form-floating">
                                     <input type="text" class="form-control rounded-3" id="lName" name="Lname" placeholder="Doe" required>
                                     <label for="lName">Last Name</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row g-2 mb-3">
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control rounded-3 bg-light text-muted" id="regionDisplay" value="Region IV-A (CALABARZON)" readonly disabled>
+                                    <label for="regionDisplay">Region</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <select class="form-select rounded-3" id="citySelect" name="city" required>
+                                        <option value="" selected disabled>Loading Cities...</option>
+                                    </select>
+                                    <label for="citySelect">City / Municipality</label>
                                 </div>
                             </div>
                         </div>
@@ -150,7 +171,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                         <div class="text-center">
                             <div class="small text-muted mb-3">Already have an account? <a href="login.php" class="fw-semibold text-decoration-none" style="color: #d06a93;">Log In Here</a></div>
-                            <div class="w-25 mx-auto opacity-25 my-3">
+                            <hr class="w-25 mx-auto opacity-25 my-3">
                             <a href="index.php" class="btn-back d-inline-flex align-items-center gap-2">
                                 <i class="bi bi-arrow-left"></i> Back to Homepage
                             </a>
@@ -166,5 +187,34 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const citySelect = document.getElementById("citySelect");
+
+            const regionIvACode = "040000000";
+
+            fetch(`https://psgc.gitlab.io/api/regions/${regionIvACode}/cities-municipalities/`)
+                .then(response => response.json())
+                .then(data => {
+          
+                    citySelect.innerHTML = '<option value="" selected disabled>Select City / Municipality</option>';
+
+                    data.sort((a, b) => a.name.localeCompare(b.name));
+
+                    data.forEach(city => {
+                        let option = document.createElement("option");
+                        option.value = city.name;
+                        option.textContent = city.name;
+                        citySelect.appendChild(option);
+                    });
+                })
+                .catch(error => {
+                    console.error("Error pulling CALABARZON cities mapping:", error);
+                    citySelect.innerHTML = '<option value="" selected disabled>Error loading locations</option>';
+                });
+        });
+    </script>
+
 </body>
+
 </html>
